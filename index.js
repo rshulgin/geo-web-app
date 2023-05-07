@@ -9,7 +9,7 @@ const tiles1 = L.tileLayer(
 
 
 const map2 = L.map('example2').setView([31.771959, 35.217018], 8).addLayer(tiles1);
-var bounds = L.latLngBounds(
+const bounds = L.latLngBounds(
   L.latLng(29.487, 34.245), // Southwestern point of Israel
   L.latLng(33.345, 35.836)  // Northeastern point of Israel
 );
@@ -70,14 +70,14 @@ if(geoJsonData) {
 
 }
 map2.on('pm:drawstart', function (e) {
-  var layer = e.workingLayer;
+  const layer = e.workingLayer;
   // console.log(layer);
   layer.on('pm:centerplaced', function (e) {
     // console.log(e);
   });
 });
 map2.on('pm:create', function (e) {
-  var layer = e.layer;
+  const layer = e.layer;
   // console.log(layer);
   layer.on('pm:centerplaced', function (e) {
     // console.log(e);
@@ -91,9 +91,9 @@ map2.pm.disableDraw('Line');
 
 
 function saveToStorageSendData() {
-  var res = [];
+  const res = [];
   for(const key in map2._layers) {
-    var layer = map2._layers[key]
+    const layer = map2._layers[key]
     if(layer.toGeoJSON && layer.toGeoJSON().geometry) {
       res.push(treatCircle(layer.toGeoJSON(), layer));
     }

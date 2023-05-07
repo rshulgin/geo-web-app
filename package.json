@@ -1,0 +1,22 @@
+{
+  "name": "geo-web-app",
+  "version": "1.0.0",
+  "description": "map arias",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rshulgin/geo-web-app.git"
+  },
+  "author": "Roman Shulgin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rshulgin/geo-web-app/issues"
+  },
+  "homepage": "https://github.com/rshulgin/geo-web-app#readme",
+  "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.14.2"
+  }
+}

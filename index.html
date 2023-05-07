@@ -2,22 +2,23 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Leaflet Geoman Demo</title>
+    <title>Geo areas web app</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/leaflet@latest/dist/leaflet.css"
+      href="node_modules/leaflet/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="leaflet-geoman.css" />
+    <link rel="stylesheet" href="node_modules/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css" />
     <!-- You can change from the local source to the cdn: -->
     <!-- <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />   -->
-    <link rel="stylesheet" href="demo.css" />
+    <link rel="stylesheet" href="index.css" />
     <!-- <script src="https://unpkg.com/leaflet.markercluster@1.0.0"></script> -->
   </head>
   <body>
     <div class="map" id="example2"></div>
     <button onclick="saveToStorageSendData()" class="save-button" >Save</button>
-    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
-    <script src="leaflet-geoman.min.js"></script>
-    <script src="demo.js"></script>
+    <script src="node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="node_modules/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.min.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>
