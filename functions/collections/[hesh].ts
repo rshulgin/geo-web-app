@@ -2,7 +2,7 @@ interface Env {
     COLLECTION_URL: string;
     COLLECTION_PATH: string;
 }
-export const onRequestGet = ({env, params}) => {
+export const onRequestGet: PagesFunction<Env> = ({env, params}) => {
     try {
         const hesh = params.hesh;
         return hesh
@@ -11,10 +11,9 @@ export const onRequestGet = ({env, params}) => {
     } catch(err) {
         return new Response(err.stack, { status: 500 })
     }
-    return new Response('Not found.', { status: 404 });
 }
 
-export const onRequestPost = ({env, params, data}) => {
+export const onRequestPost: PagesFunction<Env> = ({env, params, data}) => {
     try {
         const hesh = params.hesh;
 
@@ -25,5 +24,4 @@ export const onRequestPost = ({env, params, data}) => {
     } catch(err) {
         return new Response(err.stack, { status: 500 })
     }
-    return new Response('Not found.', { status: 404 });
 }
