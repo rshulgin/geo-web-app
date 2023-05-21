@@ -4,6 +4,8 @@ import '@geoman-io/leaflet-geoman-free';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 import React from 'react';
 
+const hash = location.pathname.split('/').at(1);
+
 const tiles1 = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -42,39 +44,44 @@ map2.pm.enableDraw('Circle', {
 map2.pm.enableDraw('Line', { allowSelfIntersection: false });
 map2.pm.enableDraw('Polygon', { allowSelfIntersection: false });
 
-let geoJsonData
 try {
-  geoJsonData = JSON.parse(localStorage.areas)
-} catch (e) { localStorage.areas = ''}
+  // geoJsonData = JSON.parse(localStorage.areas)
+  fetch(`/collections/${hash}`).then(async (resp) => {
+    const geoJson = await resp.json();
+    const geoJsonData = {
+      type: 'FeatureCollection' as const,
+      features: geoJson
+    }
+    if (!geoJsonData.features?.lenght) {
+      return;
+    }
+    const theCollection = L.geoJson(geoJsonData, {
+      pointToLayer: (feature, latlng) => {
+        if (feature.properties.customGeometry) {
+          return new L.Circle(latlng, feature.properties.customGeometry.radius);
+        } else {
+          return new L.Marker(latlng);
+        }
+      },
+    });
+    theCollection.addTo(map2);
+    const b = theCollection.getBounds();
+    map2.fitBounds(b);
+    console.log(theCollection);
+    theCollection.on('pm:edit', function (e) {
+      console.log(e);
+    });
+    theCollection.on('pm:dragstart', function (e) {
+      console.log(e);
+    });
+  })
 
-
-if(geoJsonData) {
-  const theCollection = L.geoJson(geoJsonData, {
-    pointToLayer: (feature, latlng) => {
-      if (feature.properties.customGeometry) {
-        return new L.Circle(latlng, feature.properties.customGeometry.radius);
-      } else {
-        return new L.Marker(latlng);
-      }
-    },
-  });
-
-  theCollection.addTo(map2);
-
-  const b = theCollection.getBounds();
-  map2.fitBounds(b);
-
-  console.log(theCollection);
-
-  theCollection.on('pm:edit', function (e) {
-    console.log(e);
-  });
-
-  theCollection.on('pm:dragstart', function (e) {
-    console.log(e);
-  });
-
+} catch (e) {
+  localStorage.areas = ''
 }
+
+
+
 
 map2.pm.enableDraw('Polygon', { allowSelfIntersection: false });
 map2.pm.disableDraw('Polygon');
@@ -101,12 +108,15 @@ function saveToStorageSendData() {
       res.push(treatCircle(layer.toGeoJSON(), layer));
     }
   }
-  localStorage.areas = res.length
-      ? JSON.stringify({
-        type: 'FeatureCollection',
-        features: res })
-      : ''
+  // localStorage.areas = res.length
+  //     ? JSON.stringify({
+  //       type: 'FeatureCollection',
+  //       features: res })
+  //     : ''
   console.log('data ready for sending::', res);
+  fetch(`/collections/${hash}`, {method: 'POST', body: JSON.stringify({geoCollection: res})}).then((response) => {
+    console.log('data sent with response: ', response)
+  })
 }
 
 function App() {
