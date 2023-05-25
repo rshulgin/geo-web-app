@@ -4,7 +4,7 @@ import '@geoman-io/leaflet-geoman-free';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 import React from 'react';
 
-const hash = location.pathname.split('/').at(1);
+const hash = window.location.pathname.split('/').at(1);
 
 const tiles1 = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
