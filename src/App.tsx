@@ -6,6 +6,9 @@ import React from 'react';
 
 const hash = window.location.pathname.split('/').at(1);
 
+const collectionsApi =
+    process.env.APP_COLLECTIONS_API || '/collections';
+
 const tiles1 = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -46,7 +49,7 @@ map2.pm.enableDraw('Polygon', { allowSelfIntersection: false });
 
 try {
   // geoJsonData = JSON.parse(localStorage.areas)
-  fetch(`/collections/${hash}`).then(async (resp) => {
+  fetch(`${collectionsApi}/${hash}`).then(async (resp) => {
     const geoJson = await resp.json();
     const geoJsonData = {
       type: 'FeatureCollection' as const,
