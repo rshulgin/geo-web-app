@@ -7,7 +7,8 @@ import React from 'react';
 const hash = window.location.pathname.split('/').at(1);
 
 const collectionsApi =
-    process.env.APP_COLLECTIONS_API || '/collections';
+  process.env.REACT_APP_COLLECTIONS_API
+  || '/collections';
 
 const tiles1 = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -117,7 +118,7 @@ function saveToStorageSendData() {
   //       features: res })
   //     : ''
   console.log('data ready for sending::', res);
-  fetch(`/collections/${hash}`, {method: 'POST', body: JSON.stringify({geoCollection: res})}).then((response) => {
+  fetch(`${collectionsApi}/${hash}`, {method: 'POST', body: JSON.stringify({geoCollection: res})}).then((response) => {
     console.log('data sent with response: ', response)
   })
 }
