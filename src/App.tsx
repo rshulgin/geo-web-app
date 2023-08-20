@@ -1,8 +1,9 @@
-import L from 'leaflet';
+import L, {Util} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '@geoman-io/leaflet-geoman-free';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
 import React from 'react';
+import isArray = Util.isArray;
 
 const hash = window.location.pathname.split('/').at(1);
 
@@ -52,12 +53,13 @@ try {
   // geoJsonData = JSON.parse(localStorage.areas)
   fetch(`${collectionsApi}/${hash}`).then(async (resp) => {
     const geoJson = await resp.json();
+    if (!isArray(geoJson) || !geoJson.length) {
+      console.log({geoJson});
+      return;
+    }
     const geoJsonData = {
       type: 'FeatureCollection' as const,
       features: geoJson
-    }
-    if (!geoJsonData.features?.lenght) {
-      return;
     }
     const theCollection = L.geoJson(geoJsonData, {
       pointToLayer: (feature, latlng) => {
@@ -118,7 +120,14 @@ function saveToStorageSendData() {
   //       features: res })
   //     : ''
   console.log('data ready for sending::', res);
-  fetch(`${collectionsApi}/${hash}`, {method: 'POST', body: JSON.stringify({geoCollection: res})}).then((response) => {
+  fetch(
+      `${collectionsApi}/${hash}`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({geoCollection: res})
+      }
+  ).then((response) => {
     console.log('data sent with response: ', response)
   })
 }
